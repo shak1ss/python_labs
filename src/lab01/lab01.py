@@ -1,3 +1,2 @@
-print("hello zonaa")
-
-#how are u
+for i in range(10):
+    print("pisk is cia")
