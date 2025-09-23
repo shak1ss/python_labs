@@ -43,7 +43,7 @@ print (f"{hour}:{min:02d}")
 ```
 ![Картинка 4](./images/lab01/04.png)# python_labs
 
-### Задание 4
+### Задание 5
 ```python
 FIO = input("Введите полное ФИО: ")
 length = len(FIO.strip())
