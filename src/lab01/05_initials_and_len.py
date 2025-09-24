@@ -2,7 +2,7 @@ FIO = input("ФИО: ")
 while '  ' in FIO:
     FIO = FIO.replace('  ', ' ')
 splitwords = FIO.split()
-FIO_2 = FIO.rstrip().lstrip()
+FIO_2 = FIO.strip()
 fletters = []
 str_fletters = ''
 for splitwords in splitwords:
