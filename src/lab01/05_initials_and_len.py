@@ -5,8 +5,8 @@ splitwords = FIO.split()
 FIO_2 = FIO.strip()
 fletters = []
 str_fletters = ''
-for splitwords in splitwords:
-    fletters.append(splitwords[0])
+for words in splitwords:
+    fletters.append(words[0])
 for letter in fletters:
     str_fletters +=  letter
 print(f"Инициалы: {str_fletters}")
