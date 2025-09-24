@@ -45,12 +45,17 @@ print (f"{hour}:{min:02d}")
 
 ### Задание 5
 ```python
-FIO = input("Введите полное ФИО: ")
-length = len(FIO.strip())
-parts = FIO.split()
-initials = "".join(word[0].upper() for word in parts) + "."
-print (f"ФИО: {FIO}\n"
-       f"Инициалы: {initials}\n"
-       f"Длина (символов): {length}")
+FIO = input("ФИО: ")
+FIO = ' '.join(FIO.split())
+splitwords = FIO.split()
+FIO_2 = FIO.strip()
+fletters = []
+str_fletters = ''
+for word in splitwords:
+    fletters.append(word[0].upper())
+for letter in fletters:
+    str_fletters += letter
+print(f"Инициалы: {str_fletters}")
+print(f"Длина (символов): {len(FIO_2)}")
 ```
 ![Картинка 5](./images/lab01/05.png)# python_labs
