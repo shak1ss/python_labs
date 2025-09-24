@@ -50,7 +50,7 @@ FIO = ' '.join(FIO.split())
 splitwords = FIO.split()
 FIO_2 = FIO.strip()
 fletters = []
-str_fletters = ''
+str_fletters = '' 
 for word in splitwords:
     fletters.append(word[0].upper())
 for letter in fletters:
