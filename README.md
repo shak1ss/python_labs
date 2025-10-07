@@ -8,7 +8,7 @@ name = (input("Имя: "))
 age = int(input("Возраст: "))
 print (f"Привет, {name}! Через год тебе будет {age+1}.")
 ```
-![Картинка 1](./images/lab01/01.png)
+![Картинка 1](./images/lab01/01.png)# python_labs
 
 ### Задание 2
 ```python
@@ -59,3 +59,169 @@ print(f"Инициалы: {str_fletters}")
 print(f"Длина (символов): {len(FIO_2)}")
 ```
 ![Картинка 5](./images/lab01/05.png)# python_labs
+
+
+## Лабораторная работа 2
+
+### Задание 1
+```python
+def min_max(nums: list[float | int]) -> tuple[float | int, float | int]:    
+    if not nums:    
+        raise ValueError("Список пуст")    
+    return (min(nums),max(nums))    
+    
+def unique_sorted(nums: list[float | int]) -> list[float | int]:     
+    return sorted(set(nums)) if nums else []       
+
+def flatten(mat: list[list | tuple]) -> list:   
+    if not mat: 
+        raise ValueError("Список пуст")   
+
+    result = []
+    for row in mat:
+        if not isinstance(row,(list,tuple)): 
+            raise TypeError("строка не строка строк матрицы")  
+        result.extend(row)  
+    return result 
+    
+
+
+def show_min_max(x):
+    try:
+        print(x, "→", min_max(x))
+    except ValueError:
+        print(x, "→ ValueError")
+
+def show_unique_sorted(x):
+    print(x, "→", unique_sorted(x))
+
+def show_flatten(x):
+    try:
+        print(x, "→", flatten(x))
+    except TypeError:
+        print(x, "→ TypeError")
+
+show_min_max([3, -1, 5, 5, 0])
+show_min_max([42])
+show_min_max([-5, -2, -9])
+show_min_max([])
+show_min_max([1.5, 2, 2.0, -3.1])
+
+print()
+
+show_unique_sorted([3, 1, 2, 1, 3])
+show_unique_sorted([])
+show_unique_sorted([-1, -1, 0, 2, 2])
+show_unique_sorted([1.0, 1, 2.5, 2.5, 0])
+
+print()
+
+show_flatten([[1, 2], [3, 4]])
+show_flatten([[1], [2, 3], (4, 5)])
+show_flatten([[1], [2, 3], [1]])
+show_flatten([[1, 2], "ab"])
+```
+![Картинка 1](./images/lab02/arrays.png)# python_labs
+
+### Задание 2
+```python
+def transpose(mat: list[list[int | float]]) -> list[list[int | float]]:
+    if not mat:
+        return []
+    
+    for i in range(len(mat) - 1):
+        if len(mat[i]) != len(mat[i + 1]):
+            raise ValueError("Матрица рваная")
+
+    result = []
+    for i in range(len(mat[0])):
+        new_list = []
+        for k in range(len(mat)):
+            new_list.append(mat[k][i])  
+        result.append(new_list)         
+    return result 
+
+
+def row_sums(mat: list[list[int | float]]) -> list[float]:
+    if not mat:
+        return []
+    for i in range(len(mat) - 1):
+        if len(mat[i]) != len(mat[i + 1]):
+            raise ValueError("Матрица рваная")
+    result = []
+    for row in mat:
+        s = 0.0
+        for x in row:
+            s += x
+        result.append(s)
+    return result
+
+
+def col_sums(mat: list[list[int | float]]) -> list[float]:
+    if not mat:
+        return []
+    for i in range(len(mat) - 1):
+        if len(mat[i]) != len(mat[i + 1]):
+            raise ValueError("Матрица рваная")
+    rows = len(mat)        
+    cols = len(mat[0]) 
+    result = [0.0] * cols
+    for j in range(cols):
+        s = 0.0
+        for i in range(rows):
+            s += mat[i][j]
+        result[j] = s
+    return result
+
+
+
+def show_transpose(m):
+    try:
+        print(f"{str(m):<25} → {transpose(m)}")
+    except ValueError:
+        print(f"{str(m):<25} → ValueError")
+
+def show_row_sums(m):
+    try:
+        print(f"{str(m):<25} → {row_sums(m)}")
+    except ValueError:
+        print(f"{str(m):<25} → ValueError")
+
+def show_col_sums(m):
+    try:
+        print(f"{str(m):<25} → {col_sums(m)}")
+    except ValueError:
+        print(f"{str(m):<25} → ValueError")
+
+show_col_sums([[1, 2, 3], [4, 5, 6]])   
+show_col_sums([[-1, 1], [10, -10]])    
+show_col_sums([[0, 0], [0, 0]]) 
+show_col_sums([[1, 2], [3]]) 
+```
+![Картинка 2](./images/lab02/matrix.png)# python_labs
+
+### Задание 3
+```python
+def format_record(rec: tuple[str, str, float]) -> str:
+    fio, group, gpa = rec
+    parts = fio.split()
+    if len(parts) < 2:
+        raise ValueError("Некорректное ФИО")
+    surname = parts[0].capitalize()
+    initial = "".join(w[0].upper()+"." for w in parts [1:3])
+    group1 = " ".join(group.split()).upper()
+    if not group1:
+        raise ValueError("Группа не должна быть пустой")
+    if not isinstance(gpa,(int,float)):
+        raise TypeError("GPA должен быть числом")
+    gpa_str = f"{float(gpa):.2f}"
+
+    return f"{surname} {initial}, гр. {group1}, GPA {gpa_str}"
+
+print(format_record(("Иванов Иван Иванович", "BVIT-25", 4.6)))
+print(format_record(("Петров Пётр", "ИКВО-12", 5.0)))
+print(format_record(("Петров Пётр Петрович", "ИКВО-12", 5.0)))
+print(format_record(("  сидорова   анна  сергеевна ", "ABB-01", 3.999)))
+print(format_record((" ", "BVIT-25", 4.6)))
+```
+![Картинка 3](./images/lab02/tuples.png)# python_labs
