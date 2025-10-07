@@ -15,6 +15,7 @@ def transpose(mat: list[list[int | float]]) -> list[list[int | float]]:
     return result 
 
 
+
 def row_sums(mat: list[list[int | float]]) -> list[float]:
     if not mat:
         return []

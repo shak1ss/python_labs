@@ -34,6 +34,7 @@ def show_flatten(x):
     except TypeError:
         print(x, "→ TypeError")
 
+
 show_min_max([3, -1, 5, 5, 0])
 show_min_max([42])
 show_min_max([-5, -2, -9])

@@ -14,6 +14,7 @@ def format_record(rec: tuple[str, str, float]) -> str:
 
     return f"{surname} {initial}, гр. {group1}, GPA {gpa_str}"
 
+
 print(format_record(("Иванов Иван Иванович", "BVIT-25", 4.6)))
 print(format_record(("Петров Пётр", "ИКВО-12", 5.0)))
 print(format_record(("Петров Пётр Петрович", "ИКВО-12", 5.0)))
