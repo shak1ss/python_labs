@@ -67,6 +67,16 @@ def show_col_sums(m):
     except ValueError:
         print(f"{str(m):<25} → ValueError")
 
+show_transpose([[1, 2, 3], [4, 5, 6]])   
+show_transpose([[-1, 1], [10, -10]])    
+show_transpose([[0, 0], [0, 0]]) 
+show_transpose([[1, 2], [3]])  
+print()
+show_row_sums([[1, 2, 3], [4, 5, 6]])   
+show_row_sums([[-1, 1], [10, -10]])    
+show_row_sums([[0, 0], [0, 0]]) 
+show_row_sums([[1, 2], [3]])  
+print()
 show_col_sums([[1, 2, 3], [4, 5, 6]])   
 show_col_sums([[-1, 1], [10, -10]])    
 show_col_sums([[0, 0], [0, 0]]) 
