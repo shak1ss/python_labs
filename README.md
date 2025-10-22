@@ -102,25 +102,26 @@ def show_flatten(x):
     except TypeError:
         print(x, "→ TypeError")
 
-show_min_max([3, -1, 5, 5, 0])
-show_min_max([42])
-show_min_max([-5, -2, -9])
+
+show_min_max([1337, -1, 6, 5, 0])
+show_min_max([428])
+show_min_max([-5, -29, -9])
 show_min_max([])
-show_min_max([1.5, 2, 2.0, -3.1])
+show_min_max([1.55, 2, 2.1, -3.9])
 
 print()
 
-show_unique_sorted([3, 1, 2, 1, 3])
+show_unique_sorted([1337, 2, 4, 2, 1337])
 show_unique_sorted([])
-show_unique_sorted([-1, -1, 0, 2, 2])
+show_unique_sorted([-2, -2, 0, 3, 3])
 show_unique_sorted([1.0, 1, 2.5, 2.5, 0])
 
 print()
 
-show_flatten([[1, 2], [3, 4]])
-show_flatten([[1], [2, 3], (4, 5)])
-show_flatten([[1], [2, 3], [1]])
-show_flatten([[1, 2], "ab"])
+show_flatten([[1, 2], [8, 9]])
+show_flatten([[1], [23, 73], (43, 53)])
+show_flatten([[1], [6, 5], [1]])
+show_flatten([[1, 2], "strcmp"])
 ```
 ![Картинка 1](./images/lab02/arrays.png)# python_labs
 
@@ -143,11 +144,12 @@ def transpose(mat: list[list[int | float]]) -> list[list[int | float]]:
     return result 
 
 
+
 def row_sums(mat: list[list[int | float]]) -> list[float]:
     if not mat:
         return []
     for i in range(len(mat) - 1):
-        if len(mat[i]) != len(mat[i + 1]):
+        if len(mat[i]) != len(mat[i + 1]):  
             raise ValueError("Матрица рваная")
     result = []
     for row in mat:
@@ -194,20 +196,20 @@ def show_col_sums(m):
     except ValueError:
         print(f"{str(m):<25} → ValueError")
 
-show_transpose([[1, 2, 3], [4, 5, 6]])   
-show_transpose([[-1, 1], [10, -10]])    
+show_transpose([[11, 12, 13], [41, 52, 63]])   
+show_transpose([[-3, 3], [7, -7]])    
 show_transpose([[0, 0], [0, 0]]) 
 show_transpose([[1, 2], [3]])  
 print()
-show_row_sums([[1, 2, 3], [4, 5, 6]])   
-show_row_sums([[-1, 1], [10, -10]])    
-show_row_sums([[0, 0], [0, 0]]) 
+show_row_sums([[1, 12, 23], [44, 65, 86]])   
+show_row_sums([[-1, 5], [2, -10]])    
+show_row_sums([[1, 1], [1, 1]]) 
 show_row_sums([[1, 2], [3]])  
 print()
-show_col_sums([[1, 2, 3], [4, 5, 6]])   
-show_col_sums([[-1, 1], [10, -10]])    
+show_col_sums([[1, 99, 366], [42, 52, 61]])   
+show_col_sums([[-1, 4], [8, -10]])    
 show_col_sums([[0, 0], [0, 0]]) 
-show_col_sums([[1, 2], [3]])    
+show_col_sums([[1, 2], [5]])    
 ```
 ![Картинка 2](./images/lab02/matrix.png)# python_labs
 
