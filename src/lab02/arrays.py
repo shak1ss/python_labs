@@ -35,22 +35,22 @@ def show_flatten(x):
         print(x, "→ TypeError")
 
 
-show_min_max([3, -1, 5, 5, 0])
-show_min_max([42])
-show_min_max([-5, -2, -9])
+show_min_max([1337, -1, 6, 5, 0])
+show_min_max([428])
+show_min_max([-5, -29, -9])
 show_min_max([])
-show_min_max([1.5, 2, 2.0, -3.1])
+show_min_max([1.55, 2, 2.1, -3.9])
 
 print()
 
-show_unique_sorted([3, 1, 2, 1, 3])
+show_unique_sorted([1337, 2, 4, 2, 1337])
 show_unique_sorted([])
-show_unique_sorted([-1, -1, 0, 2, 2])
+show_unique_sorted([-2, -2, 0, 3, 3])
 show_unique_sorted([1.0, 1, 2.5, 2.5, 0])
 
 print()
 
-show_flatten([[1, 2], [3, 4]])
-show_flatten([[1], [2, 3], (4, 5)])
-show_flatten([[1], [2, 3], [1]])
-show_flatten([[1, 2], "ab"])
+show_flatten([[1, 2], [8, 9]])
+show_flatten([[1], [23, 73], (43, 53)])
+show_flatten([[1], [6, 5], [1]])
+show_flatten([[1, 2], "strcmp"])

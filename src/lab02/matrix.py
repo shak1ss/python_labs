@@ -20,7 +20,7 @@ def row_sums(mat: list[list[int | float]]) -> list[float]:
     if not mat:
         return []
     for i in range(len(mat) - 1):
-        if len(mat[i]) != len(mat[i + 1]):
+        if len(mat[i]) != len(mat[i + 1]):  
             raise ValueError("Матрица рваная")
     result = []
     for row in mat:
@@ -67,17 +67,17 @@ def show_col_sums(m):
     except ValueError:
         print(f"{str(m):<25} → ValueError")
 
-show_transpose([[1, 2, 3], [4, 5, 6]])   
-show_transpose([[-1, 1], [10, -10]])    
+show_transpose([[11, 12, 13], [41, 52, 63]])   
+show_transpose([[-3, 3], [7, -7]])    
 show_transpose([[0, 0], [0, 0]]) 
 show_transpose([[1, 2], [3]])  
 print()
-show_row_sums([[1, 2, 3], [4, 5, 6]])   
-show_row_sums([[-1, 1], [10, -10]])    
-show_row_sums([[0, 0], [0, 0]]) 
+show_row_sums([[1, 12, 23], [44, 65, 86]])   
+show_row_sums([[-1, 5], [2, -10]])    
+show_row_sums([[1, 1], [1, 1]]) 
 show_row_sums([[1, 2], [3]])  
 print()
-show_col_sums([[1, 2, 3], [4, 5, 6]])   
-show_col_sums([[-1, 1], [10, -10]])    
+show_col_sums([[1, 99, 366], [42, 52, 61]])   
+show_col_sums([[-1, 4], [8, -10]])    
 show_col_sums([[0, 0], [0, 0]]) 
-show_col_sums([[1, 2], [3]])    
+show_col_sums([[1, 2], [5]])    
