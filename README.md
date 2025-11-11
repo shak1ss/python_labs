@@ -440,4 +440,88 @@ def process_and_write_text():
 if __name__ == "__main__":
     process_and_write_text()
 ```
-![Картинка 1](./images/lab04/text_report.png)# python_labs
+![Картинка 1][./images/lab04/text_report.png]# python_labs
+
+
+## Лабораторная работа 5
+
+### Тестовые данные (people.json)
+![Картинка 1](./images/lab05/people.png)# python_labs
+
+### Задание A
+```
+import json
+import csv
+from pathlib import Path
+
+def json_to_csv(json_path: str, csv_path: str) -> None:
+    json_file = Path(json_path)
+    csv_file = Path(csv_path)
+
+    if json_file.suffix != '.json':
+        raise ValueError(f"Неверный тип файла: {json_path}. Ожидается .json")
+    
+    if not json_file.exists():
+        raise FileNotFoundError(f"JSON файл не найден: {json_path}")
+# Ридинг из json
+    with open(json_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    
+    if not data:
+        raise ValueError(f"Пустой JSON файл: {json_path}")
+
+# Врайтинг в csv
+    with open(csv_path, 'w', newline='', encoding='utf-8') as f:
+        if data:
+            writer = csv.DictWriter(f, fieldnames=data[0].keys())
+            writer.writeheader()
+            writer.writerows(data)
+        else:
+            raise ValueError(f"Пустой JSON файл: {json_path}")
+        
+    print(f"Файл успешно преобразован в CSV: {csv_path}")
+
+# Пути к файлам
+json_file_path = 'src/data/samples/people.json' 
+csv_file_path = 'src/data/out/people_from_json.csv'  
+
+json_to_csv(json_file_path, csv_file_path)
+```
+![Картинка 2](./images/lab05/people_from_json.png)# python_labs
+
+
+### Задание B
+```
+import csv
+from pathlib import Path
+
+def csv_to_xlsx(csv_path: str, xlsx_path: str) -> None:
+    csv_file = Path(csv_path)
+    xlsx_file = Path(xlsx_path)
+
+    if csv_file.suffix != '.csv':
+        raise ValueError(f"Неверный тип файла: {csv_path}. Ожидается .csv")
+    
+    if not csv_file.exists():
+        raise FileNotFoundError(f"CSV файл не найден: {csv_path}")
+# Ридинг из csv
+    with open(csv_path, 'r', encoding='utf-8') as f:
+        reader = csv.reader(f)
+        rows = list(reader)
+
+    if not rows:
+        raise ValueError(f"Пустой CSV файл: {csv_path}")
+# Врайтинг в xlsx
+    with open(xlsx_path, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerows(rows)
+    
+    print(f"Файл успешно преобразован в XLSX: {xlsx_path}")
+
+# Пути к файлам
+csv_file_path = 'src/data/out/people_from_json.csv'  
+xlsx_file_path = 'src/data/out/people_from_csv.xlsx'  
+
+csv_to_xlsx(csv_file_path, xlsx_file_path)
+```
+![Картинка 3](./images/lab05/people_from_csv.png)# python_labs
