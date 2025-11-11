@@ -440,4 +440,4 @@ def process_and_write_text():
 if __name__ == "__main__":
     process_and_write_text()
 ```
-![Картинка 1](./images/lab03/text_report.png)# python_labs
+![Картинка 1](./images/lab04/text_report.png)# python_labs
