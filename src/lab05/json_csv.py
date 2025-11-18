@@ -16,7 +16,7 @@ def json_to_csv(json_path: str, csv_path: str) -> None:
         data = json.load(f)
     
     if not data:
-        raise ValueError(f"Пустой JSON файл: {json_path}")
+        raise ValueError(f"Пустой JSON файл: {json_path}")  
 
 # Врайтинг в csv
     with open(csv_path, 'w', newline='', encoding='utf-8') as f:
