@@ -525,3 +525,129 @@ xlsx_file_path = 'src/data/out/people_from_csv.xlsx'
 csv_to_xlsx(csv_file_path, xlsx_file_path)
 ```
 ![Картинка 3](./images/lab05/people_from_csv.png)# python_labs
+
+## Лабораторная работа 6
+
+### Задание 1
+```
+import argparse
+import re
+from collections import Counter
+
+# Функция для вывода содержимого файла
+def cat(input_file, number_lines=False):
+    try:
+        with open(input_file, 'r', encoding='utf-8') as file:
+            for idx, line in enumerate(file, 1):
+                if number_lines:
+                    print(f"{idx}: {line.strip()}")
+                else:
+                    print(line.strip())
+    except FileNotFoundError:
+        print(f"Ошибка: файл {input_file} не найден.")
+
+# Функция для анализа частоты слов
+def stats(input_file, top=5):
+    try:
+        with open(input_file, 'r', encoding='utf-8') as file:
+            text = file.read().lower()
+            words = re.findall(r'\w+', text)
+            word_counts = Counter(words)
+            most_common = word_counts.most_common(top)
+            print(f"Топ {top} самых часто встречающихся слов:")
+            for word, count in most_common:
+                print(f"{word}: {count}")
+    except FileNotFoundError:
+        print(f"Ошибка: файл {input_file} не найден.")
+
+def main():
+    parser = argparse.ArgumentParser(description="CLI утилиты для работы с текстовыми файлами")
+    subparsers = parser.add_subparsers(dest="command")
+
+    # Подкоманда cat — для вывода содержимого файла
+    cat_parser = subparsers.add_parser("cat", help="Вывести содержимое файла")
+    cat_parser.add_argument("--input", required=True, help="Путь к файлу")
+    cat_parser.add_argument("-n", action="store_true", help="Нумеровать строки")
+
+    # Подкоманда stats — для анализа частоты слов
+    stats_parser = subparsers.add_parser("stats", help="Анализ частотности слов")
+    stats_parser.add_argument("--input", required=True, help="Путь к файлу")
+    stats_parser.add_argument("--top", type=int, default=5, help="Количество часто встречающихся слов")
+
+    args = parser.parse_args()
+
+    if args.command == "cat":
+        cat(args.input, args.n)
+    elif args.command == "stats":
+        stats(args.input, args.top)
+
+if __name__ == "__main__":
+    main()
+```
+![Картинка 1](./images/lab06/cat.png)# python_labs
+![Картинка 2](./images/lab06/stats.png)# python_labs
+
+### Задание 2
+```
+import argparse
+import json
+import csv
+
+# Конвертация JSON в CSV
+def json2csv(input_file, output_file):
+    try:
+        with open(input_file, 'r', encoding='utf-8') as json_file:
+            data = json.load(json_file)
+        
+        with open(output_file, 'w', newline='', encoding='utf-8') as csv_file:
+            writer = csv.writer(csv_file)
+            # Записываем заголовки (из ключей первого словаря)
+            writer.writerow(data[0].keys())
+            # Записываем данные
+            for entry in data:
+                writer.writerow(entry.values())
+        print(f"Конвертация из JSON в CSV завершена: {output_file}")
+    except FileNotFoundError:
+        print(f"Ошибка: файл {input_file} не найден.")
+
+# Конвертация CSV в JSON
+def csv2json(input_file, output_file):
+    try:
+        with open(input_file, 'r', encoding='utf-8') as csv_file:
+            reader = csv.reader(csv_file)
+            headers = next(reader)  # Заголовки (первый ряд)
+            rows = [dict(zip(headers, row)) for row in reader]
+        
+        with open(output_file, 'w', encoding='utf-8') as json_file:
+            json.dump(rows, json_file, indent=4)
+        print(f"Конвертация из CSV в JSON завершена: {output_file}")
+    except FileNotFoundError:
+        print(f"Ошибка: файл {input_file} не найден.")
+
+def main():
+    parser = argparse.ArgumentParser(description="Конвертеры данных")
+    subparsers = parser.add_subparsers(dest="cmd")
+
+    # Подкоманда json2csv — конвертация из JSON в CSV
+    json2csv_parser = subparsers.add_parser("json2csv", help="Конвертировать JSON в CSV")
+    json2csv_parser.add_argument("--in", dest="input", required=True, help="Путь к файлу JSON")
+    json2csv_parser.add_argument("--out", dest="output", required=True, help="Путь к файлу CSV")
+
+    # Подкоманда csv2json — конвертация из CSV в JSON
+    csv2json_parser = subparsers.add_parser("csv2json", help="Конвертировать CSV в JSON")
+    csv2json_parser.add_argument("--in", dest="input", required=True, help="Путь к файлу CSV")
+    csv2json_parser.add_argument("--out", dest="output", required=True, help="Путь к файлу JSON")
+
+    args = parser.parse_args()
+
+    if args.cmd == "json2csv":
+        json2csv(args.input, args.output)
+    elif args.cmd == "csv2json":
+        csv2json(args.input, args.output)
+
+if __name__ == "__main__":
+    main()
+```
+![Картинка 1](./images/lab06/convert.png)# python_labs
+![Картинка 2](./images/lab06/people_json.png)# python_labs
+![Картинка 3](./images/lab06/people_csv.png)# python_labs
