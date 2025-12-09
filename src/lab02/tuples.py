@@ -4,11 +4,11 @@ def format_record(rec: tuple[str, str, float]) -> str:
     if len(parts) < 2:
         raise ValueError("Некорректное ФИО")
     surname = parts[0].capitalize()
-    initial = "".join(w[0].upper()+"." for w in parts [1:3])
+    initial = "".join(w[0].upper() + "." for w in parts[1:3])
     group1 = " ".join(group.split()).upper()
     if not group1:
         raise ValueError("Группа не должна быть пустой")
-    if not isinstance(gpa,(int,float)):
+    if not isinstance(gpa, (int, float)):
         raise TypeError("GPA должен быть числом")
     gpa_str = f"{float(gpa):.2f}"
 

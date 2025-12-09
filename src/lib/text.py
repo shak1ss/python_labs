@@ -1,40 +1,46 @@
 import re
 
+
 def normalize(text: str, *, casefold: bool = True, yo2e: bool = True) -> str:
-    s=text
-    if casefold :
-        s=s.casefold()
-    if yo2e :
-        s=s.replace("ё","е").replace("Ё","Е")
-    s=s.replace("\t"," ").replace("\r"," ").replace("\n"," ")
-    s = ' '.join(s.split())
-    s=s.strip()
+    s = text
+    if casefold:
+        s = s.casefold()
+    if yo2e:
+        s = s.replace("ё", "е").replace("Ё", "Е")
+    s = s.replace("\t", " ").replace("\r", " ").replace("\n", " ")
+    s = " ".join(s.split())
+    s = s.strip()
 
     return s
 
+
 def tokenize(text: str) -> list[str]:
-    pattern= r'\w+(?:-\w+)*'
+    pattern = r"\w+(?:-\w+)*"
     tokenstext = re.findall(pattern, text)
 
     return tokenstext
 
+
 def count_freq(tokens: list[str]) -> dict[str, int]:
-    counts={}
+    counts = {}
     for word in tokens:
-        counts[word]=counts.get(word,0)+1
+        counts[word] = counts.get(word, 0) + 1
     return counts
+
 
 def sort_key(item):
     return [-item[1], item[0]]
 
+
 def top_n(freq: dict[str, int], n: int = 5) -> list[tuple[str, int]]:
-    sorted_freq= sorted(freq.items(),key=sort_key)
-    top_n=[]
+    sorted_freq = sorted(freq.items(), key=sort_key)
+    top_n = []
 
     for i in range(min(n, len(sorted_freq))):
         top_n.append((sorted_freq[i][0], sorted_freq[i][1]))
 
     return top_n
+
 
 def summary(text):
     normalized_text = normalize(text)
@@ -52,6 +58,3 @@ def summary(text):
 
     for word, count in top:
         print(f"{word}:{count}")
-
-    
-    

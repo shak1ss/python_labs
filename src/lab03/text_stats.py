@@ -1,11 +1,12 @@
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from src.lib.text import normalize, tokenize, count_freq, top_n
+
 
 def main():
     input_text = sys.stdin.readline()
-
 
     text_norm = normalize(input_text)
     tokens = tokenize(text_norm)
@@ -21,6 +22,7 @@ def main():
     print("Топ-5:")
     for word, count in top_words:
         print(f"{word}:{count}")
+
 
 if __name__ == "__main__":
     main()
