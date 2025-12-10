@@ -37,9 +37,7 @@ def test_json_to_csv_empty_raises(tmp_path: Path):
 def test_json_to_csv_invalid_json(tmp_path: Path):
     src = tmp_path / "invalid.json"
     dst = tmp_path / "out.csv"
-    invalid_json_data = (
-        '{"name": "Vasia", "age": 54'  
-    )
+    invalid_json_data = '{"name": "Vasia", "age": 54'
     src.write_text(invalid_json_data, encoding="utf-8")
 
     with pytest.raises(ValueError):
