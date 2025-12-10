@@ -651,3 +651,251 @@ if __name__ == "__main__":
 ![Картинка 1](./images/lab06/convert.png)# python_labs
 ![Картинка 2](./images/lab06/people_json.png)# python_labs
 ![Картинка 3](./images/lab06/people_csv.png)# python_labs
+
+## Лабораторная работа 7
+
+### Задание test_text.py
+```
+import pytest
+from src.lib.text import normalize, tokenize, count_freq, top_n
+
+
+@pytest.mark.parametrize(
+    "source, expected",
+    [
+        ("ПрИвЕт\nМИр\t", "привет мир"),
+        ("ёжик, Ёлка", "ежик, елка"),
+        ("Hello\r\nWorld", "hello world"),
+        ("  двойные   пробелы  ", "двойные пробелы"),
+    ],
+)
+def test_normalize_basic(source, expected):
+    assert normalize(source) == expected
+
+
+@pytest.mark.parametrize(
+    "source, expected",
+    [
+        ("привет мир", ["привет", "мир"]),
+        ("гоша,саша,васютка!", ["гоша", "саша", "васютка"]),
+        (
+            "email@example.com website.shh",
+            ["email", "example", "com", "website", "shh"],
+        ),
+        ("!", []),
+    ],
+)
+def test_tokenize_basic(source, expected):
+    assert tokenize(source) == expected
+
+
+@pytest.mark.parametrize(
+    "source, expected",
+    [
+        (
+            ["я", "ненавижу", "python", "я", "ненавижу", "код"],
+            {"я": 2, "ненавижу": 2, "python": 1, "код": 1},
+        ),
+        (["four", "five", "six"], {"four": 1, "five": 1, "six": 1}),
+        (["xdxd", "xd", "xdxd", "xdxdxd", "xdxd"], {"xdxd": 3, "xd": 1, "xdxdxd": 1}),
+    ],
+)
+def test_count_freq_and_top_n(source, expected):
+    assert count_freq(source) == expected
+
+
+@pytest.mark.parametrize(
+    "source, n, expected",
+    [
+        ({"я": 2, "люблю": 2, "python": 1, "код": 1}, 2, [("люблю", 2), ("я", 2)]),
+        ({"один": 1, "два": 1, "три": 1}, 2, [("два", 1), ("один", 1)]),
+        ({"lala": 3, "la": 1, "lalala": 1}, 2, [("lala", 3), ("la", 1)]),
+    ],
+)
+def test_top_n_tie_breaker(source, n, expected):
+    assert top_n(source, n) == expected
+```
+![Картинка 1](./images/lab07/test_text.png)# python_labs
+
+### Задание test_json_csv.py
+```
+import pytest
+import json, csv
+from pathlib import Path
+from src.lab05.json_csv import json_to_csv
+from src.lab05.csv_json import csv_to_json
+
+
+def test_json_to_csv_roundtrip(tmp_path: Path):
+    src = tmp_path / "people.json"
+    dst = tmp_path / "people.csv"
+    json_data = [
+        {"name": "Vasia", "age": 54},
+        {"name": "Bob", "age": 15},
+    ]
+    src.write_text(
+        json.dumps(json_data, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    json_to_csv(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+
+    assert len(rows) == 2
+    assert {"name", "age"} <= set(rows[0].keys())
+
+
+def test_json_to_csv_empty_raises(tmp_path: Path):
+    src = tmp_path / "empty.json"
+    dst = tmp_path / "out.csv"
+    empty_json_data = []
+    src.write_text(json.dumps(empty_json_data), encoding="utf-8")
+
+    with pytest.raises(ValueError):
+        json_to_csv(str(src), str(dst))
+
+
+def test_json_to_csv_invalid_json(tmp_path: Path):
+    src = tmp_path / "invalid.json"
+    dst = tmp_path / "out.csv"
+    invalid_json_data = (
+        '{"name": "Vasia", "age": 54'  
+    )
+    src.write_text(invalid_json_data, encoding="utf-8")
+
+    with pytest.raises(ValueError):
+        json_to_csv(str(src), str(dst))
+
+
+def test_csv_to_json_roundtrip(tmp_path: Path):
+    src = tmp_path / "people.csv"
+    dst = tmp_path / "people.json"
+    csv_data = """name,age
+Vasia,54
+Bob,15"""
+
+    src.write_text(csv_data, encoding="utf-8")
+    csv_to_json(str(src), str(dst))
+
+    with dst.open(encoding="utf-8") as f:
+        result_data = json.load(f)
+
+    assert isinstance(result_data, list) and len(result_data) == 2
+    assert set(result_data[0]) == {"name", "age"}
+
+
+def test_file_not_exist(tmp_path: Path):
+    with pytest.raises(FileNotFoundError):
+        csv_to_json("nope.csv", "out.json")
+```
+![Картинка 2](./images/lab07/test_json_csv.png)# python_labs
+
+### Задание black
+![Картинка 3](./images/lab07/black.png)# python_labs
+
+
+## Лабораторная работа 8
+
+### Задание А
+```
+from dataclasses import dataclass
+from datetime import datetime
+
+@dataclass
+class Student:
+    fio: str          
+    birthdate: str    
+    group: str        
+    gpa: float        
+
+    def __post_init__(self):
+        try:
+            datetime.strptime(self.birthdate, "%Y-%m-%d")
+        except ValueError:
+            raise ValueError(f"Неверный формат даты рождения: {self.birthdate}")
+        
+        if not (0 <= self.gpa <= 10):
+            raise ValueError(f"Средний балл должен быть от 0 до 10, но получен: {self.gpa}")
+
+    def age(self) -> int:
+        birth_year = int(self.birthdate[:4])
+        current_year = datetime.today().year
+        return current_year - birth_year
+
+    def to_dict(self) -> dict:
+        return {
+            "fio": self.fio,
+            "birthdate": self.birthdate,
+            "group": self.group,
+            "gpa": self.gpa
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'Student':
+        return cls(fio=data["fio"], birthdate=data["birthdate"], group=data["group"], gpa=data["gpa"])
+
+    def __str__(self):
+        # Для красоты
+        return f"Student(fio={self.fio}, group={self.group}, gpa={self.gpa})"
+```
+## тест
+```
+from src.lab08.models import Student  
+
+def test_age():
+    student = Student("Майк Тайсон", "1966-06-30", "БИВТ-25-1", 5.0)
+    assert student.age() == 59 
+
+def test_to_dict():
+    student = Student("Флойд Мэйвезер", "1977-02-24", "БИВТ-25-2", 4.8)
+    student_dict = student.to_dict()
+    assert student_dict == {
+        'fio': 'Флойд Мэйвезер',
+        'birthdate': '1977-02-24',
+        'group': 'БИВТ-25-2',
+        'gpa': 4.8
+    }
+
+def test_from_dict():
+    student_dict = {
+        'fio': 'Джордж Флойд',
+        'birthdate': '1973-10-14',
+        'group': 'БИВТ-25-3',
+        'gpa': 3.9
+    }
+    student = Student.from_dict(student_dict)
+    assert student.fio == "Джордж Флойд"
+    assert student.gpa == 3.9
+```
+![Картинка 1](./images/lab08/test_models.png)# python_labs
+
+### Задание B
+```
+import json
+from typing import List
+from .models import Student
+
+def students_to_json(students: List[Student], path: str):
+    data = [s.to_dict() for s in students]
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+def students_from_json(path: str) -> List[Student]:
+    with open(path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return [Student.from_dict(item) for item in data]
+```
+
+## тест
+```
+import pytest
+from src.lab08.serialize import students_to_json, students_from_json
+
+def test_serialization():
+    students = students_from_json('src/data/lab08/students_input.json')
+    for student in students:
+        print(f"{student.fio}, {student.birthdate}, {student.group}, GPA: {student.gpa}")
+    students_to_json(students, 'src/data/lab08/students_output.json')
+    print("Файл сохранён в src/data/lab08/students_output.json")
+```
+![Картинка 2](./images/lab08/output_test.png)# python_labs
