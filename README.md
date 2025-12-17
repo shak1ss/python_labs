@@ -1033,3 +1033,307 @@ if __name__ == "__main__":
 ```
 ![Картинка 1](./images/lab09/lab09.png)# python_labs
 ![Картинка 2](./images/lab09/lab0901.png)# python_labs
+
+
+## Лабораторная работа 10
+### Теория 
+```
+Стек (Stack)
+
+Стек - это структура данных, работающая по принципу "последний вошёл - первый вышел" (LIFO). То есть, элемент, который был добавлен последним, будет извлечён первым.
+
+Основные операции стека:
+
+push(x) - добавление элемента на вершину стека.
+pop() - удаление и возврат верхнего элемента стека.
+peek() - просмотр верхнего элемента, без его удаления.
+
+Применение стека:
+
+История действий в приложениях (например, undo/redo).
+Обход графов или деревьев в глубину (DFS).
+Проверка правильности скобок в выражениях.
+
+Если использовать стек на массиве или списке, то все операции, как добавление, удаление или просмотр элемента, выполняются за постоянное время - O(1). Это означает, что независимо от размера стека, операции выполняются быстро и одинаково.
+
+Очередь (Queue)
+
+Очередь - это структура данных, которая работает по принципу "первый вошёл - первый вышел" (FIFO). То есть, элемент, который был добавлен первым, будет извлечён первым.
+
+Основные операции очереди:
+
+enqueue(x) - добавление элемента в конец очереди.
+dequeue() - удаление и возврат элемента из начала очереди.
+peek() - просмотр первого элемента без его удаления.
+
+Очередь часто используется в задачах, где необходимо обрабатывать элементы по порядку, например, в планировщиках задач или в сетевых буферах.
+
+В Python обычный список не идеален для реализации очереди, потому что операция удаления элемента с начала списка - это O(n), так как все элементы сдвигаются. Лучше использовать deque из модуля collections, который позволяет выполнять добавление и удаление элементов с обоих концов за O(1).
+
+Односвязный список (Singly Linked List)
+
+Односвязный список - это структура, состоящая из элементов (узлов), где каждый узел содержит значение и ссылку на следующий узел. Список не хранит данные подряд в памяти, и каждый узел указывает только на следующий.
+
+Преимущества:
+
+    Вставка и удаление элементов в начале списка происходит за O(1), так как достаточно обновить одну ссылку.
+
+    Нет необходимости сдвигать элементы, как в массиве.
+
+Недостатки:
+
+    Доступ к элементам по индексу требует обхода списка, то есть за O(n).
+
+    Невозможно быстро получить доступ к предыдущему элементу, что делает удаление узлов в середине списка более сложным.
+
+Основные операции:
+
+prepend - добавление в начало списка.
+append - добавление в конец, но если нет ссылки на последний узел, потребуется пройти весь список.
+
+поиск по значению - требуется пройти через все элементы, что тоже O(n).
+
+Двусвязный список (Doubly Linked List)
+
+Двусвязный список похож на односвязный, но каждый узел содержит две ссылки: на следующий и на предыдущий узел. Это позволяет двигаться по списку в обе стороны.
+
+Преимущества:
+
+    Вставка и удаление узлов в любом месте списка выполняется за O(1), так как есть ссылки на предыдущие и последующие элементы.
+
+    Можно легко идти в обе стороны: вперед и назад.
+
+Недостатки:
+
+    Каждый узел требует больше памяти, так как нужно хранить две ссылки.
+
+    Код становится более сложным, так как нужно следить за обеими ссылками.
+
+Основные операции:
+
+    prepend и append выполняются за O(1).
+
+    поиск по значению и доступ по индексу всё равно остаются O(n), так как нужно пройти по списку.
+```
+ ### Задание А
+```
+ class Stack:
+    def __init__(self):
+        self._data = []
+
+    def push(self, item):
+        self._data.append(item)
+
+    def pop(self):
+        if self.is_empty():
+            raise IndexError("pop from empty stack")
+        return self._data.pop()
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        return self._data[-1]
+
+    def is_empty(self):
+        return len(self._data) == 0
+
+    def __len__(self):
+        return len(self._data)
+    
+    def __repr__(self):
+        return f"Stack({self._data})"
+
+
+class Queue:
+    def __init__(self):
+        self._data = []
+
+    def enqueue(self, item):
+        self._data.append(item)
+
+    def dequeue(self):
+        if self.is_empty():
+            raise IndexError("dequeue from empty queue")
+        return self._data.pop(0)
+
+    def peek(self):
+        if self.is_empty():
+            return None
+        return self._data[0]
+
+    def is_empty(self):
+        return len(self._data) == 0
+
+    def __len__(self):
+        return len(self._data)
+    
+    def __repr__(self):
+        return f"Queue({self._data})"
+```
+## тест задания А
+```
+from structures import Stack, Queue
+
+stack = Stack()
+print("=== Тест Stack ===")
+print(f"   Стек: {stack}")
+print(f"   Длина: {len(stack)}")
+stack.push(10)
+stack.push(20)
+stack.push(30)
+print(f"   После push: {stack}")
+print(f"   Длина: {len(stack)}")
+print(f"   Верхний элемент: {stack.peek()}")
+print(f"   Попытка pop: {stack.pop()}")
+print(f"   Стек после pop: {stack}")
+print(f"   Длина: {len(stack)}")
+print(f"   Пуст ли стек: {stack.is_empty()}")
+
+queue = Queue()
+print("\n=== Тест Queue ===")
+print(f"   Очередь: {queue}")
+print(f"   Длина: {len(queue)}")
+queue.enqueue(1)
+queue.enqueue(2)
+queue.enqueue(3)
+print(f"   После enqueue: {queue}")
+print(f"   Длина: {len(queue)}")
+print(f"   Первый элемент: {queue.peek()}")
+print(f"   Попытка dequeue: {queue.dequeue()}")
+print(f"   Очередь после dequeue: {queue}")
+print(f"   Длина: {len(queue)}")
+print(f"   Пустая ли очередь: {queue.is_empty()}")
+```
+![Картинка 1](./images/lab10/lab10str.png)# python_labs
+
+## Задание В
+```
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+
+
+class SinglyLinkedList:
+    def __init__(self):
+        self.head = None
+        self.tail = None
+        self.size = 0
+
+    def append(self, value):
+        new_node = Node(value)
+        if self.tail:
+            self.tail.next = new_node
+        self.tail = new_node
+        if not self.head:
+            self.head = new_node
+        self.size += 1
+
+    def prepend(self, value):
+        new_node = Node(value)
+        if not self.head:
+            self.tail = new_node
+        new_node.next = self.head
+        self.head = new_node
+        self.size += 1
+
+    def insert(self, idx, value):
+        if idx < 0 or idx > self.size:
+            raise IndexError("Index out of range")
+        if idx == 0:
+            self.prepend(value)
+        elif idx == self.size:
+            self.append(value)
+        else:
+            current = self.head
+            for _ in range(idx - 1):
+                current = current.next
+            new_node = Node(value)
+            new_node.next = current.next
+            current.next = new_node
+            self.size += 1
+
+    def remove(self, value):
+        current = self.head
+        if current and current.value == value:
+            self.head = current.next
+            if not self.head:
+                self.tail = None
+            self.size -= 1
+            return
+        prev = None
+        while current:
+            if current.value == value:
+                prev.next = current.next
+                if not current.next:
+                    self.tail = prev
+                self.size -= 1
+                return
+            prev = current
+            current = current.next
+        raise ValueError(f"{value} not found in list")
+
+    def remove_at(self, idx):
+        if idx < 0 or idx >= self.size:
+            raise IndexError("Index out of range")
+        current = self.head
+        if idx == 0:
+            self.head = current.next
+            if not self.head:
+                self.tail = None
+        else:
+            prev = None
+            for _ in range(idx):
+                prev = current
+                current = current.next
+            prev.next = current.next
+            if not current.next:
+                self.tail = prev
+        self.size -= 1
+
+    def __iter__(self):
+        current = self.head
+        while current:
+            yield current.value
+            current = current.next
+
+    def __len__(self):
+        return self.size
+
+    def __repr__(self):
+        return f"SinglyLinkedList([{', '.join(map(str, self))}])"
+```
+## тест задания В
+```
+from linked_list import SinglyLinkedList
+
+lst = SinglyLinkedList()
+print("=== Тест SinglyLinkedList ===")
+print(f"   Список: {lst}")
+print(f"   Длина: {len(lst)}")
+lst.append(10)
+lst.append(20)
+lst.append(30)
+print(f"   После append: {lst}")
+print(f"   Длина: {len(lst)}")
+lst.prepend(5)
+print(f"   После prepend(5): {lst}")
+lst.insert(2, 15)
+print(f"   После insert(2, 15): {lst}")
+print(f"   Элементы: ", end="")
+for x in lst:
+    print(x, end=" ")
+print()
+lst.insert(0, 1)
+lst.insert(len(lst), 100)
+print(f"   После вставки в начало и в конец: {lst}")
+try:
+    lst.insert(-5, 999)
+except IndexError as e:
+    print(f"   Ошибка при insert(-5): {e}")
+try:
+    lst.insert(100, 100)
+except IndexError as e:
+    print(f"   Ошибка при insert(100): {e}")
+```
+![Картинка 2](./images/lab10/lab10nestr.png)# python_labs
